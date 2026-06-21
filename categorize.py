@@ -10,7 +10,19 @@ genai.configure(api_key=api_key)
 model = genai.GenerativeModel("gemini-2.5-flash")
 
 def categorize_transaction(description, amount):
-    prompt = f"Categorize this transaction: {description}, £{amount}. Reply with just one word for the category."
+    if amount < 0:
+        transaction_type = "an expense (money spent)"
+    else:
+        transaction_type = "income (money received)"
+
+    prompt = f"""Categorize this transaction into ONE word.
+Description: {description}
+Amount: £{amount} ({transaction_type})
+
+Common categories: Groceries, Income, Subscriptions, Transport, Entertainment, Bills, Shopping, Dining, Other.
+
+Reply with just one word."""
+
     response = model.generate_content(prompt)
     return response.text.strip()
 

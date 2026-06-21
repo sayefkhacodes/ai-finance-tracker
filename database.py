@@ -68,6 +68,21 @@ def get_all_transactions():
     conn.close()
     return rows
 
+
+def update_category(transaction_id, category):
+    conn = sqlite3.connect("finance.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        UPDATE transactions
+        SET category = ?
+        WHERE id = ?
+    """, (category, transaction_id))
+
+    conn.commit()
+    conn.close()
+    
+
 if __name__ == "__main__":
     create_database()
     insert_from_csv("transactions.csv")
