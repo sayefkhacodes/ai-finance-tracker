@@ -58,6 +58,20 @@ def insert_from_csv(filename):
     print("CSV data inserted into database!")
 
 
+def get_all_transactions():
+    conn = sqlite3.connect("finance.db")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM transactions")
+    rows = cursor.fetchall()
+
+    conn.close()
+    return rows
+
 if __name__ == "__main__":
     create_database()
     insert_from_csv("transactions.csv")
+
+    transactions = get_all_transactions()
+    for t in transactions:
+        print(t)
